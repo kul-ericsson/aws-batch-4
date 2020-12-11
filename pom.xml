@@ -1,0 +1,300 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<!--<groupId>com.mycompany.app</groupId>-->
+	<groupId>com.thinknyx</groupId>
+	<artifactId>my-webapp</artifactId>
+	<packaging>war</packaging>
+	<version>1.6-SNAPSHOT</version>
+	<name>my-webapp Maven Webapp</name>
+ 
+	<description>A demo for deployment to the Central Repository via OSSRH using Bitbucket Pipeline</description>
+	<url>https://bitbucket.org/thinknyx/maven_web_application</url>
+	<licenses>
+	    	<license>
+	      		<name>The Apache Software License, Version 2.0</name>
+		      	<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+	    	</license>
+	</licenses>
+  	<developers>
+    		<developer>
+      			<name>Kulbhushan Mayer</name>
+		        <email>kulbhushan.mayer@thinknyx.com</email>
+			<organization>thinkyx technologies llp</organization>
+		        <organizationUrl>http://www.simpligility.com</organizationUrl>
+		</developer>
+	</developers>
+ 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>	
+	</properties>
+	
+	<!--<distributionManagement>
+		<site>
+			<id>site</id>
+			<name>Internal site to host project reports and documents</name>
+			<url>file:/E:/Tools/sonatype-work/nexus/storage/site/${project.artifactId}/${project.version}</url>
+		</site>
+			<repository>
+				<id>releases</id>
+				<name>Internal Releases</name>
+				<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+			</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>Internal Snapshots</name>
+			<url>http://localhost:8081/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>-->
+
+	<!-- Distrbution Management to deploy file in central repository -->
+
+	<distributionManagement>
+		<repository>
+			<id>nexus</id>
+                        <url>http://84.39.48.145:8086/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+	        	<id>nexus</id>
+	  		<url>http://84.39.48.145:8086/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+	
+	<scm>
+		<connection>scm:git:https://kulbhushan_mayer@bitbucket.org/thinknyx/maven_web_application.git</connection>
+		<developerConnection>scm:git:[fetch=]https://bitbucket.org/thinknyx/maven_web_application[push=]https://kulbhushan_mayer@bitbucket.org/thinknyx/maven_web_application.git</developerConnection>
+		<url>https://bitbucket.org/thinknyx/maven_web_application</url>
+		<tag>HEAD</tag>	
+	</scm>
+	
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://192.168.1.112:7991/browse/MACDB</url>
+	</issueManagement>
+  
+	<profiles>
+		<profile>
+			<id>appserverConfig-dev</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>dev</value>
+				</property>
+			</activation>
+			<properties>
+				<environment>DEV</environment>
+				<appserver.home>/path/to/dev/appserver</appserver.home>
+				<appserver.port>port_number</appserver.port>
+				<appserver.username>devuser</appserver.username>
+			</properties>
+		</profile>
+		<profile>
+			<id>appserverConfig-dev-2</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>dev-2</value>
+				</property>
+			</activation>
+			<properties>
+				<environment>DEV-2</environment>
+				<appserver.home>/path/to/another/dev/appserver2</appserver.home>
+				<appserver.port>port_number</appserver.port>
+				<appserver.username>devuser2</appserver.username>
+			</properties>
+		</profile>
+	</profiles>
+	
+	<build>
+		<finalName>my-webapp</finalName>
+		
+		<plugins>
+		
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<server>TomcatServer</server>
+					<url>http://84.39.48.145:8080/manager/text</url>
+					<path>/my-webapp</path>
+				</configuration>
+			</plugin>
+			
+			<!--<plugin>
+			        <groupId>org.apache.maven.plugins</groupId>
+			        <artifactId>maven-release-plugin</artifactId>
+			        <version>2.5.3</version>
+			</plugin>-->
+			
+			<plugin>
+				<groupId>com.github.ekryd.echo-maven-plugin</groupId>
+				<artifactId>echo-maven-plugin</artifactId>
+				<version>1.2.0</version>
+				<executions>
+					<execution>
+						<id>package</id>
+						<phase>package</phase>
+						<goals>
+							<goal>echo</goal>
+						</goals>
+						<configuration>
+							<message>JAR has been created for ${environment}</message>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install</id>
+						<phase>install</phase>
+						<goals>
+							<goal>echo</goal>
+						</goals>
+						<configuration>
+							<message>JAR has been installed in Local Repository</message>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.3</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.scm</groupId>
+						<artifactId>maven-scm-api</artifactId>
+						<version>1.7</version>
+					</dependency>
+				</dependencies>
+			</plugin>	
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.15</version>
+				<configuration>
+					<!-- Sets the VM argument line used when unit tests are run. -->
+					<argLine>${surefireArgLine}</argLine>
+					<!-- Skips unit tests if the value of skip.unit.tests property is true -->
+					<skipTests>${skip.unit.tests}</skipTests>
+					<!-- Excludes integration tests when unit tests are run. -->
+					<excludes>
+						<exclude>**/IT*.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>			
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.7.5.201505241946</version>
+				<executions>
+				<!--
+					Prepares the property pointing to the JaCoCo runtime agent which
+					is passed as VM argument when Maven the Surefire plugin is executed.
+				-->
+					<execution>
+						<id>pre-unit-test</id>
+						<goals>
+							<goal>prepare-agent</goal>	
+						</goals>
+						<configuration>
+							<!-- Sets the path to the file which contains the execution data. -->			
+							<destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
+							<!--
+								Sets the name of the property containing the settings
+								for JaCoCo runtime agent.
+							-->
+							<propertyName>surefireArgLine</propertyName>
+						</configuration>
+					</execution>
+					<!--
+						Ensures that the code coverage report for unit tests is created after
+						unit tests have been run.
+					-->
+					<execution>
+						<id>post-unit-test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<configuration>
+							<!-- Sets the path to the file which contains the execution data. -->
+							<dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+							<!-- Sets the output directory for the code coverage report. -->
+							<outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!--<plugin>
+			        <groupId>org.apache.maven.plugins</groupId>
+			        <artifactId>maven-gpg-plugin</artifactId>
+			        <version>1.5</version>
+			        <executions>
+					<execution>
+				            <id>sign-artifacts</id>
+				            <phase>verify</phase>
+				            <goals>
+					    	<goal>sign</goal>
+				            </goals>
+				  	</execution>
+			        </executions>
+		    </plugin>-->
+			<!--<plugin>
+			        <groupId>org.sonatype.plugins</groupId>
+			        <artifactId>nexus-staging-maven-plugin</artifactId>
+			        <version>1.6.7</version>
+			        <extensions>true</extensions>
+			        <configuration>
+			        	<serverId>ossrh</serverId>
+				        <nexusUrl>https://oss.sonatype.org/</nexusUrl>-->
+					<!-- Set this to true and the release will automatically proceed and sync to Central Repository will follow  -->
+				        <!--<autoReleaseAfterClose>true</autoReleaseAfterClose>
+        			</configuration>
+      			</plugin>-->
+		</plugins>
+	</build>
+	
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-changelog-plugin</artifactId>
+				<version>2.3</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>		
+				<artifactId>maven-changes-plugin</artifactId>
+				<version>2.12.1</version>
+				<configuration>
+					<issueTypes>Sub-Tasks</issueTypes>
+					<statusIds>Closed</statusIds>
+					<jiraUser>admin</jiraUser>
+					<jiraPassword>admin</jiraPassword>
+				</configuration>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>jira-report</report>
+							<report>changes-report</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+			<!--<plugin>
+			        <groupId>org.apache.maven.plugins</groupId>
+			        <artifactId>maven-release-plugin</artifactId>
+			        <version>2.5.3</version>
+			</plugin>-->
+		</plugins>
+	</reporting>
+	
+	<dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  
+</project>
