@@ -37,9 +37,9 @@ phases:
   build:
     commands:
       - mvn clean install
-      # - command
-  #post_build:
-    #commands:
+  post_build:
+    commands:
+      - docker image build -t thinknyx:1.0 .
       # - command
       # - command
 #reports:
