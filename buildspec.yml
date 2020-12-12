@@ -42,6 +42,7 @@ phases:
     commands:
       - docker image build -t thinknyx:1.0 .
       - docker tag thinknyx:1.0 554660509057.dkr.ecr.us-east-2.amazonaws.com/thinknyx:1.0
+      - docker push 554660509057.dkr.ecr.us-east-2.amazonaws.com/thinknyx:1.0
       # - command
       # - command
 #reports:
