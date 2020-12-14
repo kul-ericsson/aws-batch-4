@@ -11,7 +11,7 @@ data "aws_vpc" "thinknyx_vpc" {
 }
 
 data "aws_subnet" "thinknyx_public_subnet"{
-    vpc_id = aws_vpc.thinknyx_vpc.id
+    vpc_id = data.aws_vpc.thinknyx_vpc.id
     filter {
       name = "tag:Name"
       values = ["thinknyx_subnet_public_2"]
