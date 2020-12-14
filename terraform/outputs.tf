@@ -17,3 +17,7 @@ output "thinknyx_vpc" {
 output "thinknyx_addtional_volume_id" {
   value = aws_ebs_volume.thinknyx_addtional_volume.id
 }
+
+output "thinknyx_mysql_db_endpoint" {
+  value = aws_db_instance.thinknyx_mysql_db.endpoint
+}
