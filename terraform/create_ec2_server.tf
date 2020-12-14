@@ -17,6 +17,7 @@ resource "aws_instance" "thinknyx_ec2_server" {
   tags = {
     "Name" = "thinknyx_ec2_server"
   }
+  subnet_id = aws_subnet.thinknyx_subnet.id
 }
 
 output "thinknyx_ami" {

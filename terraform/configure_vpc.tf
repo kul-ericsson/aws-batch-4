@@ -18,6 +18,16 @@ resource "aws_subnet" "thinknyx_subnet_public" {
   availability_zone = "us-east-2a"
 }
 
+resource "aws_subnet" "thinknyx_subnet" {
+  vpc_id = data.aws_vpc.thinknyx_vpc.id
+  cidr_block = "10.86.17.0/24"
+  map_public_ip_on_launch = false
+  tags = {
+    "Name" = "thinknyx_subnet_kul"
+  }
+  availability_zone = "us-east-2a"
+}
+
 resource "aws_internet_gateway" "thinknyx_internet_gateway" {
   vpc_id = aws_vpc.thinknyx_vpc.id
   tags = {
