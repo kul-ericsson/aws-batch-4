@@ -6,6 +6,10 @@ data "aws_ami" "thinknyx_ami" {
   }
 }
 
+data "aws_vpc" "thinknyx_vpc" {
+  id = "vpc-0df3356130c95009c"
+}
+
 resource "aws_instance" "thinknyx_ec2_server" {
   ami = data.aws_ami.thinknyx_ami.id
   instance_type = "t2.micro"
@@ -21,4 +25,8 @@ output "thinknyx_ami" {
 
 output "thinknyx_ec2_server_public_ip" {
   value = aws_instance.thinknyx_ec2_server.public_ip
+}
+
+output "thinknyx_vpc" {
+  value = data.aws_vpc.thinknyx_vpc.id
 }
