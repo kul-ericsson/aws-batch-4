@@ -6,6 +6,7 @@ resource "aws_instance" "thinknyx_ec2_server" {
     "Name" = "thinknyx_ec2_server"
   }
   subnet_id = aws_subnet.thinknyx_subnet.id
+  vpc_security_group_ids = [ aws_security_group.thinknyx_vpc_default.id ]
 }
 
 resource "aws_instance" "thinknyx_ec2_server_public" {
@@ -16,4 +17,5 @@ resource "aws_instance" "thinknyx_ec2_server_public" {
     "Name" = "thinknyx_ec2_server_public"
   }
   subnet_id = data.aws_subnet.thinknyx_public_subnet.id
+  vpc_security_group_ids = [ aws_security_group.thinknyx_vpc_default.id ]
 }
