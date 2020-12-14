@@ -9,3 +9,10 @@ data "aws_ami" "thinknyx_ami" {
 data "aws_vpc" "thinknyx_vpc" {
   id = "vpc-0df3356130c95009c"
 }
+
+data "aws_subnet" "thinknyx_public_subnet"{
+    filter {
+      name = "tag:Name"
+      values = ["thinknyx_subnet_public"]
+    }
+}
