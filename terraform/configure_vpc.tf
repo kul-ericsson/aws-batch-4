@@ -13,9 +13,9 @@ resource "aws_subnet" "thinknyx_subnet_public" {
   cidr_block = "10.86.10.0/24"
   map_public_ip_on_launch = true
   tags = {
-    "Name" = "thinknyx_subnet_public"
+    "Name" = "thinknyx_subnet_public_2"
   }
-  availability_zone = "us-east-2a"
+  availability_zone = var.public_availability_zone
 }
 
 resource "aws_subnet" "thinknyx_subnet" {
