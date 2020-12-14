@@ -13,9 +13,19 @@ resource "aws_subnet" "thinknyx_subnet_public" {
   cidr_block = "10.86.10.0/24"
   map_public_ip_on_launch = true
   tags = {
-    "Name" = "thinknyx_subnet_public_2"
+    "Name" = "thinknyx_subnet_public_kul"
   }
   availability_zone = var.public_availability_zone
+}
+
+resource "aws_subnet" "thinknyx_subnet_public_2" {
+  vpc_id = aws_vpc.thinknyx_vpc.id
+  cidr_block = "10.86.100.0/24"
+  map_public_ip_on_launch = true
+  tags = {
+    "Name" = "thinknyx_subnet_public_kul"
+  }
+  availability_zone = "us-east-2b"
 }
 
 resource "aws_subnet" "thinknyx_subnet" {

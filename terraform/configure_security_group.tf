@@ -13,6 +13,12 @@ resource "aws_security_group" "thinknyx_vpc_default" {
       cidr_blocks = [ "0.0.0.0/0" ]
       protocol = "tcp"
   }
+  ingress {
+      from_port = 3306
+      to_port = 3306
+      cidr_blocks = [ "0.0.0.0/0" ]
+      protocol = "tcp"
+  }
   egress {
       from_port = 0
       to_port = 0

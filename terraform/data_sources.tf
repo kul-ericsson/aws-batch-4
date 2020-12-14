@@ -13,8 +13,9 @@ data "aws_vpc" "thinknyx_vpc" {
 data "aws_subnet" "thinknyx_public_subnet"{
   depends_on = [ aws_subnet.thinknyx_subnet_public ]
   vpc_id = data.aws_vpc.thinknyx_vpc.id
+  availability_zone = var.public_availability_zone
   filter {
     name = "tag:Name"
-    values = ["thinknyx_subnet_public_2"]
+    values = ["thinknyx_subnet_public_kul"]
   }
 }
