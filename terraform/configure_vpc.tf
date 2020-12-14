@@ -7,3 +7,13 @@ resource "aws_vpc" "thinknyx_vpc" {
       Name = "thinknyx_vpc"
   }
 }
+
+resource "aws_subnet" "thinknyx_subnet_public" {
+  vpc_id = aws_vpc.thinknyx_vpc.id
+  cidr_block = "10.86.10.0/24"
+  map_public_ip_on_launch = true
+  tags = {
+    "Name" = "thinknyx_subnet_public"
+  }
+  availability_zone = "us-east-2a"
+}
