@@ -35,3 +35,8 @@ resource "aws_route_table" "thinknyx_route_table_public" {
       gateway_id = aws_internet_gateway.thinknyx_internet_gateway.id
   }
 }
+
+resource "aws_route_table_association" "thinknyx_route_table_association_public" {
+  subnet_id = aws_subnet.thinknyx_subnet_public.id
+  route_table_id = aws_route_table.thinknyx_route_table_public.id
+}
